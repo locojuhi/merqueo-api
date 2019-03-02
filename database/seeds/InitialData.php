@@ -18,7 +18,6 @@ class InitialData extends Seeder
     {
         $currentDateTime = \Carbon\Carbon::now();
         $providersJsonFile = file_get_contents(storage_path('initial-data') . '/providers-merqueo.json');
-        $productsJsonFile = file_get_contents(storage_path('initial-data') . '/inventory-merqueo.json');
         $ordersJsonFile = file_get_contents(storage_path('initial-data') . '/orders-merqueo.json');
 
         $providersData = json_decode($providersJsonFile);
@@ -33,6 +32,7 @@ class InitialData extends Seeder
                 'updated_at' => $currentDateTime
             ]);
 
+            //TODO: optimize to use repository where is searching for a provider.
             foreach ($provider->products as $product) {
                 if (array_key_exists($product->productId, $productList)) {
                     DB::table('products')->insert([
