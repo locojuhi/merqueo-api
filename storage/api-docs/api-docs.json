@@ -27,6 +27,29 @@
                     }
                 }
             }
+        },
+        "/api/transporters": {
+            "get": {
+                "tags": [
+                    "Transporters"
+                ],
+                "summary": "Display a listing of the resource.",
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Application content type",
+                        "required": false,
+                        "type": "string",
+                        "default": "application/json"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok"
+                    }
+                }
+            }
         }
     },
     "definitions": {}

@@ -17,6 +17,18 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResources([
-    'products' => 'Api\ProductController'
-]);
+Route::namespace('Api')->group(function () {
+    Route::apiResources([
+        'products' => 'ProductController',
+        'transporters' => 'TransporterController',
+    ]);
+
+    Route::prefix('transporters')->group(function (){
+        Route::get('/{transporterId}', 'TransporterController@show');
+        Route::get('/{transporterId}/orders', 'TransporterController@orders');
+        Route::get('/{transporterId}/orders/{orderId}', 'TransporterController@viewOrder');
+    });
+});
+
+
+

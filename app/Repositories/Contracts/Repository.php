@@ -85,13 +85,16 @@ abstract class Repository implements RepositoryInterface
     }
 
     /**
-     * @param $attribute
-     * @param $value
+     * @param array $conditions
      * @param array $columns
      * @return mixed
      */
-    public function findOneBy($attribute, $value, $columns = ['*']) {
-        return $this->model->where($attribute, '=', $value)->first($columns);
+    public function findOneBy($conditions = [], $columns = ['*']) {
+        $result = null;
+        foreach ($conditions as $conditionKey => $conditionValue) {
+            $result = $this->model->where($conditionKey, '=', $conditionValue);
+        }
+        return $result->first($columns);
     }
 
     /**
