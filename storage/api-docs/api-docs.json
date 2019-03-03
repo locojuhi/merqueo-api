@@ -4,6 +4,30 @@
         "title": "Merqueo - Technical Test",
         "version": "1.0.0"
     },
-    "paths": {},
+    "paths": {
+        "/api/products": {
+            "get": {
+                "tags": [
+                    "Inventory"
+                ],
+                "summary": "Get an inventory list for the products",
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Application content type",
+                        "required": false,
+                        "type": "string",
+                        "default": "application/json"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    }
+                }
+            }
+        }
+    },
     "definitions": {}
 }

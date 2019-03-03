@@ -24,7 +24,23 @@ class ProductController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
+     * @SWG\Get(
+     *     path="/api/products",
+     *     summary="Get an inventory list for the products",
+     *     tags={"Inventory"},
+     *     @SWG\Parameter(
+     *          name="Content-Type",
+     *          type="string",
+     *          default="application/json",
+     *          in="header",
+     *          description="Application content type",
+     *          required=false
+     *     ),
+     *     @SWG\Response(
+     *          response=200,
+     *          description="ok"
+     *     )
+     * )
      * @return \Illuminate\Http\Response
      */
     public function index()
