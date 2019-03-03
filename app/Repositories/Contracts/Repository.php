@@ -90,8 +90,22 @@ abstract class Repository implements RepositoryInterface
      * @param array $columns
      * @return mixed
      */
-    public function findBy($attribute, $value, $columns = ['*']) {
+    public function findOneBy($attribute, $value, $columns = ['*']) {
         return $this->model->where($attribute, '=', $value)->first($columns);
+    }
+
+    /**
+     * @param array $conditions
+     * @param array $columns
+     * @return mixed
+     */
+    public function findBy($conditions = [], $columns = ['*']) {
+        $result = null;
+        foreach ($conditions as $conditionKey => $conditionValue) {
+            $result = $this->model->where($conditionKey, '=', $conditionValue);
+        }
+
+        return $result->get($columns);
     }
 
     abstract function model();

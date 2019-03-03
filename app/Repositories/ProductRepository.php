@@ -13,4 +13,12 @@ class ProductRepository extends Repository
     {
         return Product::class;
     }
+
+    /**
+     * @return mixed
+     */
+    public function findProductsInventoryList()
+    {
+        return $this->model->with('inventory')->get('*');
+    }
 }

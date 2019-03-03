@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class Warehouse extends Model
 {
     public function inventory()
     {
-        return $this->hasOne('App\Models\Inventory');
+        return $this->hasMany('App\Models\Inventory');
     }
 }

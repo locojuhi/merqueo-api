@@ -5,9 +5,9 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use App\Services\Migrations\CommonTableFieldsService;
 
-class CreateInventoryTable extends Migration
+class CreateWarehousesTable extends Migration
 {
-    const TABLE_NAME = 'inventories';
+    const TABLE_NAME = 'warehouses';
 
     /**
      * Run the migrations.
@@ -17,13 +17,9 @@ class CreateInventoryTable extends Migration
     public function up()
     {
         CommonTableFieldsService::createTableWithCommonFields(self::TABLE_NAME);
+
         Schema::table(self::TABLE_NAME, function (Blueprint $table) {
-            $table->unsignedInteger('product_id');
-            $table->unsignedInteger('quantity');
-            $table->foreign('product_id')
-                ->references('id')
-                ->on('products')
-                ->onDelete('cascade');
+            $table->string('name');
         });
     }
 

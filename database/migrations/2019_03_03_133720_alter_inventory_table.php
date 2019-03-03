@@ -3,9 +3,8 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use App\Services\Migrations\CommonTableFieldsService;
 
-class CreateInventoryTable extends Migration
+class AlterInventoryTable extends Migration
 {
     const TABLE_NAME = 'inventories';
 
@@ -16,13 +15,11 @@ class CreateInventoryTable extends Migration
      */
     public function up()
     {
-        CommonTableFieldsService::createTableWithCommonFields(self::TABLE_NAME);
         Schema::table(self::TABLE_NAME, function (Blueprint $table) {
-            $table->unsignedInteger('product_id');
-            $table->unsignedInteger('quantity');
-            $table->foreign('product_id')
+            $table->unsignedInteger('warehouse_id')->nullable();
+            $table->foreign('warehouse_id')
                 ->references('id')
-                ->on('products')
+                ->on('warehouses')
                 ->onDelete('cascade');
         });
     }
@@ -34,6 +31,9 @@ class CreateInventoryTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(self::TABLE_NAME);
+        Schema::table(self::TABLE_NAME, function (Blueprint $table) {
+            $table->dropForeign('warehouse_id');
+            $table->dropColumn('warehouse_id');
+        });
     }
 }

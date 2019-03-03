@@ -13,4 +13,16 @@ class InventoryRepository extends Repository
     {
         return Inventory::class;
     }
+
+    /**
+     * @return mixed
+     */
+    public function findProductsInventoryList()
+    {
+        return $this->model->with([
+            'product' => function($query) {
+                $query->select('id', 'name');
+            }
+        ])->get();
+    }
 }

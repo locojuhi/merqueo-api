@@ -19,5 +19,8 @@ interface RepositoryInterface
 
     public function find($id, $columns = ['*']);
 
-    public function findBy($field, $value, $columns = ['*']);
+    public function findBy($conditions = [], $columns = ['*']);
+
+    public function findOneBy($field, $value, $columns = ['*']);
+
 }
