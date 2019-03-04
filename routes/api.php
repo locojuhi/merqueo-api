@@ -18,9 +18,23 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::namespace('Api')->group(function () {
-    Route::apiResources([
-        'products' => 'ProductController',
-        'transporters' => 'TransporterController',
+    Route::apiResource('orders', 'OrderController')->except([
+        'store',
+        'update',
+        'destroy',
+        'create'
+    ]);
+    Route::apiResource('products', 'ProductController')->except([
+        'store',
+        'update',
+        'destroy',
+        'create'
+    ]);
+    Route::apiResource('transporters', 'TransporterController')->except([
+        'store',
+        'update',
+        'destroy',
+        'create'
     ]);
 
     Route::prefix('transporters')->group(function (){
@@ -28,6 +42,12 @@ Route::namespace('Api')->group(function () {
         Route::get('/{transporterId}/orders', 'TransporterController@orders');
         Route::get('/{transporterId}/orders/{orderId}', 'TransporterController@viewOrder');
     });
+
+    Route::prefix('orders')->group(function (){
+        Route::patch('/{orderId}', 'OrderController@dispatchOrder');
+    });
+
+
 });
 
 

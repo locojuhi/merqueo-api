@@ -14,12 +14,16 @@ class OrderRepository extends Repository
         return Order::class;
     }
 
-    public function findOderWithProducts($orderId)
+    /**
+     * @param $orderId
+     * @return Order
+     */
+    public function findOderWithProducts($orderId): Order
     {
         $order = $this->model
             ->with(['products.product'])
             ->where('id', '=', $orderId)
-            ->get();
+            ->first();
         ;
 
         return $order;

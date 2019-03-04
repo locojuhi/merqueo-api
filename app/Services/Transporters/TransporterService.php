@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Services\Transporters;
 
+use App\Models\Order;
 use App\Models\Transporter;
 use App\Repositories\OrderRepository;
 use App\Repositories\TransporterRepository;
@@ -76,9 +77,9 @@ class TransporterService
     /**
      * @param string $transporterId
      * @param string $orderId
-     * @return Collection
+     * @return Order
      */
-    public function getTransporterOrdersInfo(string $transporterId, string $orderId): Collection
+    public function getTransporterOrdersInfo(string $transporterId, string $orderId): Order
     {
         $order = $this->orderRepository->findOderWithProducts($orderId);
 
