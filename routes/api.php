@@ -16,3 +16,39 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::namespace('Api')->group(function () {
+    Route::apiResource('orders', 'OrderController')->except([
+        'store',
+        'update',
+        'destroy',
+        'create'
+    ]);
+    Route::apiResource('products', 'ProductController')->except([
+        'store',
+        'update',
+        'destroy',
+        'create'
+    ]);
+    Route::apiResource('transporters', 'TransporterController')->except([
+        'store',
+        'update',
+        'destroy',
+        'create'
+    ]);
+
+    Route::prefix('transporters')->group(function (){
+        Route::get('/{transporterId}', 'TransporterController@show');
+        Route::get('/{transporterId}/orders', 'TransporterController@orders');
+        Route::get('/{transporterId}/orders/{orderId}', 'TransporterController@viewOrder');
+    });
+
+    Route::prefix('orders')->group(function (){
+        Route::patch('/{orderId}', 'OrderController@dispatchOrder');
+    });
+
+
+});
+
+
+

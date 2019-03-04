@@ -1,0 +1,955 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 11.1 (Debian 11.1-3.pgdg90+1)
+-- Dumped by pg_dump version 11.1 (Debian 11.1-3.pgdg90+1)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: inventories; Type: TABLE; Schema: public; Owner: development
+--
+
+CREATE TABLE public.inventories (
+    id bigint NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone,
+    deleted_at timestamp(0) without time zone,
+    product_id integer NOT NULL,
+    quantity integer NOT NULL,
+    warehouse_id integer
+);
+
+
+ALTER TABLE public.inventories OWNER TO development;
+
+--
+-- Name: inventories_id_seq; Type: SEQUENCE; Schema: public; Owner: development
+--
+
+CREATE SEQUENCE public.inventories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.inventories_id_seq OWNER TO development;
+
+--
+-- Name: inventories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: development
+--
+
+ALTER SEQUENCE public.inventories_id_seq OWNED BY public.inventories.id;
+
+
+--
+-- Name: migrations; Type: TABLE; Schema: public; Owner: development
+--
+
+CREATE TABLE public.migrations (
+    id integer NOT NULL,
+    migration character varying(255) NOT NULL,
+    batch integer NOT NULL
+);
+
+
+ALTER TABLE public.migrations OWNER TO development;
+
+--
+-- Name: migrations_id_seq; Type: SEQUENCE; Schema: public; Owner: development
+--
+
+CREATE SEQUENCE public.migrations_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.migrations_id_seq OWNER TO development;
+
+--
+-- Name: migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: development
+--
+
+ALTER SEQUENCE public.migrations_id_seq OWNED BY public.migrations.id;
+
+
+--
+-- Name: order_products; Type: TABLE; Schema: public; Owner: development
+--
+
+CREATE TABLE public.order_products (
+    id bigint NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone,
+    deleted_at timestamp(0) without time zone,
+    order_id integer NOT NULL,
+    product_id integer NOT NULL,
+    quantity integer NOT NULL
+);
+
+
+ALTER TABLE public.order_products OWNER TO development;
+
+--
+-- Name: order_products_id_seq; Type: SEQUENCE; Schema: public; Owner: development
+--
+
+CREATE SEQUENCE public.order_products_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.order_products_id_seq OWNER TO development;
+
+--
+-- Name: order_products_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: development
+--
+
+ALTER SEQUENCE public.order_products_id_seq OWNED BY public.order_products.id;
+
+
+--
+-- Name: orders; Type: TABLE; Schema: public; Owner: development
+--
+
+CREATE TABLE public.orders (
+    id bigint NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone,
+    status character varying(255) DEFAULT 'pending'::character varying NOT NULL,
+    transporter_id integer,
+    CONSTRAINT orders_status_check CHECK (((status)::text = ANY ((ARRAY['pending'::character varying, 'dispatched'::character varying])::text[])))
+);
+
+
+ALTER TABLE public.orders OWNER TO development;
+
+--
+-- Name: orders_id_seq; Type: SEQUENCE; Schema: public; Owner: development
+--
+
+CREATE SEQUENCE public.orders_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.orders_id_seq OWNER TO development;
+
+--
+-- Name: orders_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: development
+--
+
+ALTER SEQUENCE public.orders_id_seq OWNED BY public.orders.id;
+
+
+--
+-- Name: password_resets; Type: TABLE; Schema: public; Owner: development
+--
+
+CREATE TABLE public.password_resets (
+    email character varying(255) NOT NULL,
+    token character varying(255) NOT NULL,
+    created_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.password_resets OWNER TO development;
+
+--
+-- Name: products; Type: TABLE; Schema: public; Owner: development
+--
+
+CREATE TABLE public.products (
+    id bigint NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone,
+    deleted_at timestamp(0) without time zone,
+    name character varying(255),
+    provider_id integer
+);
+
+
+ALTER TABLE public.products OWNER TO development;
+
+--
+-- Name: products_id_seq; Type: SEQUENCE; Schema: public; Owner: development
+--
+
+CREATE SEQUENCE public.products_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.products_id_seq OWNER TO development;
+
+--
+-- Name: products_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: development
+--
+
+ALTER SEQUENCE public.products_id_seq OWNED BY public.products.id;
+
+
+--
+-- Name: providers; Type: TABLE; Schema: public; Owner: development
+--
+
+CREATE TABLE public.providers (
+    id bigint NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone,
+    deleted_at timestamp(0) without time zone,
+    name character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.providers OWNER TO development;
+
+--
+-- Name: providers_id_seq; Type: SEQUENCE; Schema: public; Owner: development
+--
+
+CREATE SEQUENCE public.providers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.providers_id_seq OWNER TO development;
+
+--
+-- Name: providers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: development
+--
+
+ALTER SEQUENCE public.providers_id_seq OWNED BY public.providers.id;
+
+
+--
+-- Name: transporters; Type: TABLE; Schema: public; Owner: development
+--
+
+CREATE TABLE public.transporters (
+    id bigint NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone,
+    deleted_at timestamp(0) without time zone,
+    name character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.transporters OWNER TO development;
+
+--
+-- Name: transporters_id_seq; Type: SEQUENCE; Schema: public; Owner: development
+--
+
+CREATE SEQUENCE public.transporters_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.transporters_id_seq OWNER TO development;
+
+--
+-- Name: transporters_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: development
+--
+
+ALTER SEQUENCE public.transporters_id_seq OWNED BY public.transporters.id;
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: development
+--
+
+CREATE TABLE public.users (
+    id bigint NOT NULL,
+    name character varying(255) NOT NULL,
+    email character varying(255) NOT NULL,
+    email_verified_at timestamp(0) without time zone,
+    password character varying(255) NOT NULL,
+    remember_token character varying(100),
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.users OWNER TO development;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: development
+--
+
+CREATE SEQUENCE public.users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_id_seq OWNER TO development;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: development
+--
+
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
+-- Name: warehouses; Type: TABLE; Schema: public; Owner: development
+--
+
+CREATE TABLE public.warehouses (
+    id bigint NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone,
+    deleted_at timestamp(0) without time zone,
+    name character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.warehouses OWNER TO development;
+
+--
+-- Name: warehouses_id_seq; Type: SEQUENCE; Schema: public; Owner: development
+--
+
+CREATE SEQUENCE public.warehouses_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.warehouses_id_seq OWNER TO development;
+
+--
+-- Name: warehouses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: development
+--
+
+ALTER SEQUENCE public.warehouses_id_seq OWNED BY public.warehouses.id;
+
+
+--
+-- Name: inventories id; Type: DEFAULT; Schema: public; Owner: development
+--
+
+ALTER TABLE ONLY public.inventories ALTER COLUMN id SET DEFAULT nextval('public.inventories_id_seq'::regclass);
+
+
+--
+-- Name: migrations id; Type: DEFAULT; Schema: public; Owner: development
+--
+
+ALTER TABLE ONLY public.migrations ALTER COLUMN id SET DEFAULT nextval('public.migrations_id_seq'::regclass);
+
+
+--
+-- Name: order_products id; Type: DEFAULT; Schema: public; Owner: development
+--
+
+ALTER TABLE ONLY public.order_products ALTER COLUMN id SET DEFAULT nextval('public.order_products_id_seq'::regclass);
+
+
+--
+-- Name: orders id; Type: DEFAULT; Schema: public; Owner: development
+--
+
+ALTER TABLE ONLY public.orders ALTER COLUMN id SET DEFAULT nextval('public.orders_id_seq'::regclass);
+
+
+--
+-- Name: products id; Type: DEFAULT; Schema: public; Owner: development
+--
+
+ALTER TABLE ONLY public.products ALTER COLUMN id SET DEFAULT nextval('public.products_id_seq'::regclass);
+
+
+--
+-- Name: providers id; Type: DEFAULT; Schema: public; Owner: development
+--
+
+ALTER TABLE ONLY public.providers ALTER COLUMN id SET DEFAULT nextval('public.providers_id_seq'::regclass);
+
+
+--
+-- Name: transporters id; Type: DEFAULT; Schema: public; Owner: development
+--
+
+ALTER TABLE ONLY public.transporters ALTER COLUMN id SET DEFAULT nextval('public.transporters_id_seq'::regclass);
+
+
+--
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: development
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Name: warehouses id; Type: DEFAULT; Schema: public; Owner: development
+--
+
+ALTER TABLE ONLY public.warehouses ALTER COLUMN id SET DEFAULT nextval('public.warehouses_id_seq'::regclass);
+
+
+--
+-- Data for Name: inventories; Type: TABLE DATA; Schema: public; Owner: development
+--
+
+COPY public.inventories (id, created_at, updated_at, deleted_at, product_id, quantity, warehouse_id) FROM stdin;
+1	2019-03-04 04:36:52	2019-03-04 04:36:52	\N	1	37	1
+2	2019-03-04 04:36:52	2019-03-04 04:36:52	\N	2	56	1
+3	2019-03-04 04:36:52	2019-03-04 04:36:52	\N	3	37	1
+4	2019-03-04 04:36:52	2019-03-04 04:36:52	\N	4	79	1
+5	2019-03-04 04:36:52	2019-03-04 04:36:52	\N	5	2	1
+6	2019-03-04 04:36:52	2019-03-04 04:36:52	\N	6	22	1
+7	2019-03-04 04:36:52	2019-03-04 04:36:52	\N	7	18	1
+8	2019-03-04 04:36:52	2019-03-04 04:36:52	\N	8	95	1
+9	2019-03-04 04:36:52	2019-03-04 04:36:52	\N	9	90	1
+10	2019-03-04 04:36:52	2019-03-04 04:36:52	\N	10	28	1
+11	2019-03-04 04:36:52	2019-03-04 04:36:52	\N	11	78	1
+12	2019-03-04 04:36:52	2019-03-04 04:36:52	\N	12	25	1
+13	2019-03-04 04:36:52	2019-03-04 04:36:52	\N	13	58	1
+14	2019-03-04 04:36:52	2019-03-04 04:36:52	\N	14	31	1
+15	2019-03-04 04:36:52	2019-03-04 04:36:52	\N	15	99	1
+16	2019-03-04 04:36:52	2019-03-04 04:36:52	\N	16	100	1
+17	2019-03-04 04:36:52	2019-03-04 04:36:52	\N	17	42	1
+18	2019-03-04 04:36:52	2019-03-04 04:36:52	\N	18	26	1
+19	2019-03-04 04:36:52	2019-03-04 04:36:52	\N	19	92	1
+20	2019-03-04 04:36:52	2019-03-04 04:36:52	\N	20	60	1
+21	2019-03-04 04:36:52	2019-03-04 04:36:52	\N	21	45	1
+22	2019-03-04 04:36:52	2019-03-04 04:36:52	\N	22	47	1
+23	2019-03-04 04:36:52	2019-03-04 04:36:52	\N	23	14	1
+24	2019-03-04 04:36:52	2019-03-04 04:36:52	\N	24	17	1
+25	2019-03-04 04:36:52	2019-03-04 04:36:52	\N	25	38	1
+26	2019-03-04 04:36:52	2019-03-04 04:36:52	\N	26	28	1
+27	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	27	77	1
+29	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	29	36	1
+30	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	30	83	1
+31	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	31	53	1
+32	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	32	39	1
+33	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	33	94	1
+34	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	34	40	1
+35	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	35	53	1
+36	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	36	78	1
+28	2019-03-04 04:36:53	2019-03-04 04:38:04	\N	28	3	1
+\.
+
+
+--
+-- Data for Name: migrations; Type: TABLE DATA; Schema: public; Owner: development
+--
+
+COPY public.migrations (id, migration, batch) FROM stdin;
+1	2014_10_12_000000_create_users_table	1
+2	2014_10_12_100000_create_password_resets_table	1
+3	2019_03_02_182213_create_providers_table	1
+4	2019_03_02_194154_create_products_table	1
+5	2019_03_02_224249_create_inventory_table	1
+6	2019_03_02_230340_create_orders_table	1
+7	2019_03_03_130915_create_warehouses_table	1
+8	2019_03_03_133720_alter_inventory_table	1
+9	2019_03_03_155916_create_transporters_table	1
+10	2019_03_03_160023_alter_order_table	1
+11	2019_03_03_162304_create_order_products_table	1
+\.
+
+
+--
+-- Data for Name: order_products; Type: TABLE DATA; Schema: public; Owner: development
+--
+
+COPY public.order_products (id, created_at, updated_at, deleted_at, order_id, product_id, quantity) FROM stdin;
+1	\N	\N	\N	1	28	47
+2	\N	\N	\N	2	25	16
+3	\N	\N	\N	3	5	48
+4	\N	\N	\N	4	5	78
+5	\N	\N	\N	5	20	88
+6	\N	\N	\N	6	3	94
+7	\N	\N	\N	7	5	96
+8	\N	\N	\N	8	2	4
+9	\N	\N	\N	9	13	18
+10	\N	\N	\N	10	36	28
+11	\N	\N	\N	11	15	11
+12	\N	\N	\N	12	8	9
+13	\N	\N	\N	13	25	16
+14	\N	\N	\N	14	28	6
+15	\N	\N	\N	15	24	81
+16	\N	\N	\N	16	27	66
+17	\N	\N	\N	17	27	86
+18	\N	\N	\N	18	32	2
+19	\N	\N	\N	19	33	19
+20	\N	\N	\N	20	30	25
+21	\N	\N	\N	21	19	30
+22	\N	\N	\N	22	32	53
+23	\N	\N	\N	23	20	31
+24	\N	\N	\N	24	15	94
+25	\N	\N	\N	25	2	25
+26	\N	\N	\N	26	2	79
+27	\N	\N	\N	27	13	44
+28	\N	\N	\N	28	31	95
+29	\N	\N	\N	29	32	92
+30	\N	\N	\N	30	27	99
+31	\N	\N	\N	31	21	53
+32	\N	\N	\N	32	19	14
+33	\N	\N	\N	33	20	87
+34	\N	\N	\N	34	3	52
+35	\N	\N	\N	35	29	51
+36	\N	\N	\N	36	20	95
+37	\N	\N	\N	37	9	14
+38	\N	\N	\N	38	14	5
+39	\N	\N	\N	39	25	79
+40	\N	\N	\N	40	19	34
+41	\N	\N	\N	41	11	36
+42	\N	\N	\N	42	11	76
+43	\N	\N	\N	43	23	86
+44	\N	\N	\N	44	3	21
+45	\N	\N	\N	45	14	53
+46	\N	\N	\N	46	10	88
+47	\N	\N	\N	47	26	58
+48	\N	\N	\N	48	21	40
+49	\N	\N	\N	49	31	52
+50	\N	\N	\N	50	13	13
+\.
+
+
+--
+-- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: development
+--
+
+COPY public.orders (id, created_at, updated_at, status, transporter_id) FROM stdin;
+2	2019-03-04 04:36:55	2019-03-04 04:36:55	pending	2
+3	2019-03-04 04:36:55	2019-03-04 04:36:55	pending	3
+4	2019-03-04 04:36:55	2019-03-04 04:36:55	pending	4
+5	2019-03-04 04:36:55	2019-03-04 04:36:55	pending	5
+6	2019-03-04 04:36:55	2019-03-04 04:36:55	dispatched	6
+7	2019-03-04 04:36:55	2019-03-04 04:36:55	pending	7
+8	2019-03-04 04:36:55	2019-03-04 04:36:55	dispatched	8
+9	2019-03-04 04:36:55	2019-03-04 04:36:55	pending	9
+10	2019-03-04 04:36:55	2019-03-04 04:36:55	dispatched	10
+11	2019-03-04 04:36:55	2019-03-04 04:36:55	pending	11
+12	2019-03-04 04:36:55	2019-03-04 04:36:55	dispatched	12
+13	2019-03-04 04:36:55	2019-03-04 04:36:55	dispatched	13
+14	2019-03-04 04:36:55	2019-03-04 04:36:55	pending	14
+15	2019-03-04 04:36:55	2019-03-04 04:36:55	pending	15
+16	2019-03-04 04:36:55	2019-03-04 04:36:55	dispatched	16
+17	2019-03-04 04:36:55	2019-03-04 04:36:55	dispatched	17
+18	2019-03-04 04:36:55	2019-03-04 04:36:55	pending	18
+19	2019-03-04 04:36:55	2019-03-04 04:36:55	pending	19
+20	2019-03-04 04:36:55	2019-03-04 04:36:55	dispatched	20
+21	2019-03-04 04:36:55	2019-03-04 04:36:55	pending	21
+22	2019-03-04 04:36:55	2019-03-04 04:36:55	dispatched	22
+23	2019-03-04 04:36:55	2019-03-04 04:36:55	dispatched	23
+24	2019-03-04 04:36:55	2019-03-04 04:36:55	pending	24
+25	2019-03-04 04:36:55	2019-03-04 04:36:55	pending	25
+26	2019-03-04 04:36:55	2019-03-04 04:36:55	pending	26
+27	2019-03-04 04:36:55	2019-03-04 04:36:55	pending	27
+28	2019-03-04 04:36:55	2019-03-04 04:36:55	dispatched	28
+29	2019-03-04 04:36:55	2019-03-04 04:36:55	pending	29
+30	2019-03-04 04:36:55	2019-03-04 04:36:55	dispatched	30
+31	2019-03-04 04:36:56	2019-03-04 04:36:56	pending	31
+32	2019-03-04 04:36:56	2019-03-04 04:36:56	dispatched	32
+33	2019-03-04 04:36:56	2019-03-04 04:36:56	pending	33
+34	2019-03-04 04:36:56	2019-03-04 04:36:56	pending	34
+35	2019-03-04 04:36:56	2019-03-04 04:36:56	pending	35
+36	2019-03-04 04:36:56	2019-03-04 04:36:56	dispatched	36
+37	2019-03-04 04:36:56	2019-03-04 04:36:56	pending	37
+38	2019-03-04 04:36:56	2019-03-04 04:36:56	pending	38
+39	2019-03-04 04:36:56	2019-03-04 04:36:56	pending	39
+40	2019-03-04 04:36:56	2019-03-04 04:36:56	pending	40
+41	2019-03-04 04:36:56	2019-03-04 04:36:56	dispatched	41
+42	2019-03-04 04:36:56	2019-03-04 04:36:56	pending	42
+43	2019-03-04 04:36:56	2019-03-04 04:36:56	pending	43
+44	2019-03-04 04:36:56	2019-03-04 04:36:56	dispatched	44
+45	2019-03-04 04:36:56	2019-03-04 04:36:56	pending	45
+46	2019-03-04 04:36:56	2019-03-04 04:36:56	dispatched	46
+47	2019-03-04 04:36:56	2019-03-04 04:36:56	pending	47
+48	2019-03-04 04:36:56	2019-03-04 04:36:56	dispatched	48
+49	2019-03-04 04:36:56	2019-03-04 04:36:56	pending	49
+50	2019-03-04 04:36:56	2019-03-04 04:36:56	dispatched	50
+1	2019-03-04 04:36:55	2019-03-04 04:38:04	dispatched	1
+\.
+
+
+--
+-- Data for Name: password_resets; Type: TABLE DATA; Schema: public; Owner: development
+--
+
+COPY public.password_resets (email, token, created_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: products; Type: TABLE DATA; Schema: public; Owner: development
+--
+
+COPY public.products (id, created_at, updated_at, deleted_at, name, provider_id) FROM stdin;
+1	\N	\N	\N	Leche	1
+2	\N	\N	\N	Huevos	1
+3	\N	\N	\N	Manzana Verde	1
+4	\N	\N	\N	Pepino Cohombro	1
+5	\N	\N	\N	Pimentón Rojo	1
+6	\N	\N	\N	Lechuga Crespa Verde	1
+7	\N	\N	\N	Limón Tahití	1
+8	\N	\N	\N	Mora de Castilla	1
+9	\N	\N	\N	Pimentón Verde	1
+10	\N	\N	\N	Tomate Larga Vida Maduro	2
+11	\N	\N	\N	Cilantro x 500grs	2
+12	\N	\N	\N	Fresa Jugo	2
+13	\N	\N	\N	Papa R-12 Mediana	2
+14	\N	\N	\N	Curuba 	2
+15	\N	\N	\N	Brócoli	2
+16	\N	\N	\N	Aguacate Hass Pintón	2
+17	\N	\N	\N	Aguacate Hass Maduro 	2
+18	\N	\N	\N	Aguacate Pintón	2
+19	\N	\N	\N	Acelga	2
+20	\N	\N	\N	Espinaca Bogotana x 500grs	2
+21	\N	\N	\N	Kiwi	3
+22	\N	\N	\N	Cebolla Cabezona Blanca Limpia	3
+23	\N	\N	\N	Habichuela	3
+24	\N	\N	\N	Mango Tommy Maduro	3
+25	\N	\N	\N	Tomate Chonto Pintón	3
+26	\N	\N	\N	Zanahoria Grande	3
+27	\N	\N	\N	Aguacate Maduro	3
+28	\N	\N	\N	Kale o Col Rizada	3
+29	\N	\N	\N	Cebolla Cabezona Roja Limpia	3
+30	\N	\N	\N	Tomate Chonto Maduro	3
+31	\N	\N	\N	Ahuyama	3
+32	\N	\N	\N	Cebolla Cabezona Blanca Sin Pelar	3
+33	\N	\N	\N	Melón	3
+34	\N	\N	\N	Cebolla Cabezona Roja Sin Pelar	3
+35	\N	\N	\N	Cebolla Larga Junca x 500grs	3
+36	\N	\N	\N	Hierbabuena x 500grs	3
+\.
+
+
+--
+-- Data for Name: providers; Type: TABLE DATA; Schema: public; Owner: development
+--
+
+COPY public.providers (id, created_at, updated_at, deleted_at, name) FROM stdin;
+1	2019-03-04 04:36:51	2019-03-04 04:36:51	\N	Ruby
+2	2019-03-04 04:36:51	2019-03-04 04:36:51	\N	Raul
+3	2019-03-04 04:36:51	2019-03-04 04:36:51	\N	Angelica
+\.
+
+
+--
+-- Data for Name: transporters; Type: TABLE DATA; Schema: public; Owner: development
+--
+
+COPY public.transporters (id, created_at, updated_at, deleted_at, name) FROM stdin;
+1	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	General Wilkinson Sr.
+2	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	Abigail Reichert
+3	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	Antonietta Jaskolski
+4	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	Fanny Grant
+5	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	Broderick Hansen DDS
+6	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	Dr. Michale Nikolaus IV
+7	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	Quentin Feest
+8	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	Wilhelm Walter DVM
+9	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	Dr. Katlyn Mohr MD
+10	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	Dr. Rex Paucek
+11	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	Prof. Giles Greenholt
+12	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	Mr. Enoch Quitzon
+13	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	Laverna Ortiz II
+14	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	Dr. Albert VonRueden MD
+15	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	Crystel Reilly Jr.
+16	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	Mr. Ross Hermann
+17	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	Shany Johnston Sr.
+18	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	Rae Kreiger
+19	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	Salvatore Reilly
+20	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	Karina Hyatt Sr.
+21	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	Kevin Hintz
+22	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	John Marquardt
+23	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	Dr. Baron Stiedemann
+24	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	Branson Boyle
+25	2019-03-04 04:36:53	2019-03-04 04:36:53	\N	Dr. Rodger Hagenes
+26	2019-03-04 04:36:54	2019-03-04 04:36:54	\N	Tierra Gutmann
+27	2019-03-04 04:36:54	2019-03-04 04:36:54	\N	Augustine Klocko
+28	2019-03-04 04:36:54	2019-03-04 04:36:54	\N	Eleazar Sauer
+29	2019-03-04 04:36:54	2019-03-04 04:36:54	\N	Eldred Leffler
+30	2019-03-04 04:36:54	2019-03-04 04:36:54	\N	Anabelle Bayer DDS
+31	2019-03-04 04:36:54	2019-03-04 04:36:54	\N	Francis Moen
+32	2019-03-04 04:36:54	2019-03-04 04:36:54	\N	Roma Walker
+33	2019-03-04 04:36:54	2019-03-04 04:36:54	\N	Lavinia Beier
+34	2019-03-04 04:36:54	2019-03-04 04:36:54	\N	Marielle Reinger
+35	2019-03-04 04:36:54	2019-03-04 04:36:54	\N	Gilda Cassin
+36	2019-03-04 04:36:54	2019-03-04 04:36:54	\N	Finn Hegmann
+37	2019-03-04 04:36:54	2019-03-04 04:36:54	\N	Zechariah Harris
+38	2019-03-04 04:36:54	2019-03-04 04:36:54	\N	Haven Dietrich
+39	2019-03-04 04:36:54	2019-03-04 04:36:54	\N	Makenzie Kulas
+40	2019-03-04 04:36:55	2019-03-04 04:36:55	\N	Santos Johns I
+41	2019-03-04 04:36:55	2019-03-04 04:36:55	\N	Floy Hoppe
+42	2019-03-04 04:36:55	2019-03-04 04:36:55	\N	Prof. Wilfrid Green
+43	2019-03-04 04:36:55	2019-03-04 04:36:55	\N	Guillermo Marquardt Jr.
+44	2019-03-04 04:36:55	2019-03-04 04:36:55	\N	Kaela Hansen
+45	2019-03-04 04:36:55	2019-03-04 04:36:55	\N	Ashly Hintz
+46	2019-03-04 04:36:55	2019-03-04 04:36:55	\N	Daren Sanford
+47	2019-03-04 04:36:55	2019-03-04 04:36:55	\N	Candelario Gutkowski
+48	2019-03-04 04:36:55	2019-03-04 04:36:55	\N	Delmer Gibson
+49	2019-03-04 04:36:55	2019-03-04 04:36:55	\N	Brayan Rau
+50	2019-03-04 04:36:55	2019-03-04 04:36:55	\N	Mr. Jose Langosh PhD
+\.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: development
+--
+
+COPY public.users (id, name, email, email_verified_at, password, remember_token, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: warehouses; Type: TABLE DATA; Schema: public; Owner: development
+--
+
+COPY public.warehouses (id, created_at, updated_at, deleted_at, name) FROM stdin;
+1	\N	\N	\N	main
+\.
+
+
+--
+-- Name: inventories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: development
+--
+
+SELECT pg_catalog.setval('public.inventories_id_seq', 36, true);
+
+
+--
+-- Name: migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: development
+--
+
+SELECT pg_catalog.setval('public.migrations_id_seq', 11, true);
+
+
+--
+-- Name: order_products_id_seq; Type: SEQUENCE SET; Schema: public; Owner: development
+--
+
+SELECT pg_catalog.setval('public.order_products_id_seq', 50, true);
+
+
+--
+-- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: development
+--
+
+SELECT pg_catalog.setval('public.orders_id_seq', 50, true);
+
+
+--
+-- Name: products_id_seq; Type: SEQUENCE SET; Schema: public; Owner: development
+--
+
+SELECT pg_catalog.setval('public.products_id_seq', 36, true);
+
+
+--
+-- Name: providers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: development
+--
+
+SELECT pg_catalog.setval('public.providers_id_seq', 3, true);
+
+
+--
+-- Name: transporters_id_seq; Type: SEQUENCE SET; Schema: public; Owner: development
+--
+
+SELECT pg_catalog.setval('public.transporters_id_seq', 50, true);
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: development
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 1, false);
+
+
+--
+-- Name: warehouses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: development
+--
+
+SELECT pg_catalog.setval('public.warehouses_id_seq', 1, true);
+
+
+--
+-- Name: inventories inventories_pkey; Type: CONSTRAINT; Schema: public; Owner: development
+--
+
+ALTER TABLE ONLY public.inventories
+    ADD CONSTRAINT inventories_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: migrations migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: development
+--
+
+ALTER TABLE ONLY public.migrations
+    ADD CONSTRAINT migrations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: order_products order_products_pkey; Type: CONSTRAINT; Schema: public; Owner: development
+--
+
+ALTER TABLE ONLY public.order_products
+    ADD CONSTRAINT order_products_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: orders orders_pkey; Type: CONSTRAINT; Schema: public; Owner: development
+--
+
+ALTER TABLE ONLY public.orders
+    ADD CONSTRAINT orders_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: products products_pkey; Type: CONSTRAINT; Schema: public; Owner: development
+--
+
+ALTER TABLE ONLY public.products
+    ADD CONSTRAINT products_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: providers providers_pkey; Type: CONSTRAINT; Schema: public; Owner: development
+--
+
+ALTER TABLE ONLY public.providers
+    ADD CONSTRAINT providers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: transporters transporters_pkey; Type: CONSTRAINT; Schema: public; Owner: development
+--
+
+ALTER TABLE ONLY public.transporters
+    ADD CONSTRAINT transporters_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users users_email_unique; Type: CONSTRAINT; Schema: public; Owner: development
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_email_unique UNIQUE (email);
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: development
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: warehouses warehouses_pkey; Type: CONSTRAINT; Schema: public; Owner: development
+--
+
+ALTER TABLE ONLY public.warehouses
+    ADD CONSTRAINT warehouses_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: password_resets_email_index; Type: INDEX; Schema: public; Owner: development
+--
+
+CREATE INDEX password_resets_email_index ON public.password_resets USING btree (email);
+
+
+--
+-- Name: providers_name_index; Type: INDEX; Schema: public; Owner: development
+--
+
+CREATE INDEX providers_name_index ON public.providers USING btree (name);
+
+
+--
+-- Name: inventories inventories_product_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: development
+--
+
+ALTER TABLE ONLY public.inventories
+    ADD CONSTRAINT inventories_product_id_foreign FOREIGN KEY (product_id) REFERENCES public.products(id) ON DELETE CASCADE;
+
+
+--
+-- Name: inventories inventories_warehouse_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: development
+--
+
+ALTER TABLE ONLY public.inventories
+    ADD CONSTRAINT inventories_warehouse_id_foreign FOREIGN KEY (warehouse_id) REFERENCES public.warehouses(id) ON DELETE CASCADE;
+
+
+--
+-- Name: order_products order_products_order_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: development
+--
+
+ALTER TABLE ONLY public.order_products
+    ADD CONSTRAINT order_products_order_id_foreign FOREIGN KEY (order_id) REFERENCES public.orders(id) ON DELETE CASCADE;
+
+
+--
+-- Name: order_products order_products_product_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: development
+--
+
+ALTER TABLE ONLY public.order_products
+    ADD CONSTRAINT order_products_product_id_foreign FOREIGN KEY (product_id) REFERENCES public.products(id) ON DELETE CASCADE;
+
+
+--
+-- Name: orders orders_transporter_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: development
+--
+
+ALTER TABLE ONLY public.orders
+    ADD CONSTRAINT orders_transporter_id_foreign FOREIGN KEY (transporter_id) REFERENCES public.transporters(id) ON DELETE CASCADE;
+
+
+--
+-- Name: products products_provider_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: development
+--
+
+ALTER TABLE ONLY public.products
+    ADD CONSTRAINT products_provider_id_foreign FOREIGN KEY (provider_id) REFERENCES public.providers(id) ON DELETE CASCADE;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
