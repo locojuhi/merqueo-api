@@ -39,7 +39,6 @@ class OrderService
         $order = $this->orderRepository->findOderWithProducts($orderId);
 
         foreach ($order->products as $orderProduct) {
-            $currentInventoryAvailability = $this->inventoryService->getCurrentInventoryForProduct($orderProduct->product_id);
             $orderProduct->append('on_stock')->toArray();
             $orderProduct->append('supply_needed')->toArray();
         }
