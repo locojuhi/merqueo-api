@@ -5,6 +5,63 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/orders/{orderId}": {
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Application content type",
+                        "required": false,
+                        "type": "string",
+                        "default": "application/json"
+                    },
+                    {
+                        "name": "orderId",
+                        "in": "path",
+                        "description": "ID of the order that needs to be fetched",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Orders"
+                ],
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Application content type",
+                        "required": false,
+                        "type": "string",
+                        "default": "application/json"
+                    },
+                    {
+                        "name": "orderId",
+                        "in": "path",
+                        "description": "ID of the order that needs to be fetched",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok"
+                    },
+                    "400": {
+                        "description": "Lack of inventory"
+                    }
+                }
+            }
+        },
         "/api/products": {
             "get": {
                 "tags": [
@@ -42,6 +99,96 @@
                         "required": false,
                         "type": "string",
                         "default": "application/json"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok"
+                    }
+                }
+            }
+        },
+        "/api/transporters/{transporterId}": {
+            "get": {
+                "tags": [
+                    "Transporters"
+                ],
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Application content type",
+                        "required": false,
+                        "type": "string",
+                        "default": "application/json"
+                    },
+                    {
+                        "name": "transporterId",
+                        "in": "path",
+                        "description": "ID of transporter that needs to be fetched",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok"
+                    }
+                }
+            }
+        },
+        "/api/transporters/{transporterId}/orders": {
+            "get": {
+                "tags": [
+                    "Transporters"
+                ],
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Application content type",
+                        "required": false,
+                        "type": "string",
+                        "default": "application/json"
+                    },
+                    {
+                        "name": "transporterId",
+                        "in": "path",
+                        "description": "ID of transporter that needs to be fetched",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok"
+                    }
+                }
+            }
+        },
+        "/api/transporters/{transporterId}/orders/{orderId}": {
+            "get": {
+                "tags": [
+                    "Transporters"
+                ],
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Application content type",
+                        "required": false,
+                        "type": "string",
+                        "default": "application/json"
+                    },
+                    {
+                        "name": "transporterId",
+                        "in": "path",
+                        "description": "ID of transporter that needs to be fetched",
+                        "type": "string"
+                    },
+                    {
+                        "name": "orderId",
+                        "in": "path",
+                        "description": "ID of the order that needs to be fetched",
+                        "type": "string"
                     }
                 ],
                 "responses": {

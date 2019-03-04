@@ -23,27 +23,28 @@ class OrderController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
+     * @SWG\Get(
+     *      path="/api/orders/{orderId}",
+     *      tags={"Orders"},
+     *      @SWG\Parameter(
+     *          name="Content-Type",
+     *          type="string",
+     *          default="application/json",
+     *          in="header",
+     *          description="Application content type",
+     *          required=false
+     *      ),
+     *      @SWG\Parameter(
+     *          type="string",
+     *          name="orderId",
+     *          in="path",
+     *          description="ID of the order that needs to be fetched",
+     *      ),
+     *      @SWG\Response(
+     *          response=200,
+     *          description="Ok"
+     *      )
+     * )
      * @param $id
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
@@ -54,28 +55,34 @@ class OrderController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @SWG\Patch(
+     *      path="/api/orders/{orderId}",
+     *      tags={"Orders"},
+     *      @SWG\Parameter(
+     *          name="Content-Type",
+     *          type="string",
+     *          default="application/json",
+     *          in="header",
+     *          description="Application content type",
+     *          required=false
+     *      ),
+     *      @SWG\Parameter(
+     *          type="string",
+     *          name="orderId",
+     *          in="path",
+     *          description="ID of the order that needs to be fetched",
+     *      ),
+     *      @SWG\Response(
+     *          response=200,
+     *          description="Ok"
+     *      ),
+     *      @SWG\Response(
+     *          response=400,
+     *          description="Lack of inventory"
+     *      )
+     * )
+     * @param $orderId
      */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
     public function dispatchOrder($orderId)
     {
         $this->orderService->dispatchOder($orderId);
