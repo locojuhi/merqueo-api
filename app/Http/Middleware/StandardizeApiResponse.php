@@ -18,10 +18,16 @@ class StandardizeApiResponse
     {
         $originalResponse = $next($request);
         $apiResponse = new ApiResponseService();
-        $apiResponse->setContent([
+        $apiResponseContent = [
             'code' => $originalResponse->getStatusCode(),
             'data' => json_decode($originalResponse->getContent())
-        ]);
+        ];
+
+        if ($originalResponse->getStatusCode() != 200) {
+            $apiResponse->setStatusCode($originalResponse->getStatusCode());
+            $apiResponseContent['message'] = $originalResponse->getContent();
+        }
+        $apiResponse->setContent($apiResponseContent);
 
         return $apiResponse;
     }

@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Services\Responses\ApiResponseService;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
@@ -46,6 +47,21 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        return parent::render($request, $exception);
+        $apiResponse = new ApiResponseService();
+        switch (true) {
+            case $exception instanceof ResourceNotFoundException:
+                $apiResponse->setContent($exception->getMessage());
+                $apiResponse->setStatusCode($exception->getCode());
+                break;
+            case $exception instanceof BadRequestException:
+                $apiResponse->setContent($exception->getMessage());
+                $apiResponse->setStatusCode($exception->getCode());
+                break;
+            default:
+                return parent::render($request, $exception);
+                break;
+        }
+        return $apiResponse;
+
     }
 }

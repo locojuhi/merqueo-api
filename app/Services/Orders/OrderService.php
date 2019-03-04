@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Services\Orders;
 
+use App\Exceptions\BadRequestException;
 use App\Repositories\OrderRepository;
 use App\Services\Inventory\InventoryService;
 use Illuminate\Support\Facades\DB;
@@ -60,15 +61,15 @@ class OrderService
                     $productInventory->quantity = $productInventory->quantity - $orderQuantity;
 
                     if ($productInventory->quantity < 0) {
-                        //TODO: Implements Bad request exception
-                        throw new NotFoundHttpException();
+                        //TODO: Use translator
+                        throw new BadRequestException('message', 400);
                     } else {
                         $productInventory->save();
                     }
                 }
             }catch (\Exception $exception) {
-                //TODO:IMplements bad request exception
-                throw new NotFoundHttpException();
+                //TODO: Use translator
+                throw new BadRequestException('message', 400);
             }
         });
     }

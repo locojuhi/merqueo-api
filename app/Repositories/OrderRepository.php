@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Exceptions\ResourceNotFoundException;
 use App\Repositories\Contracts\Repository;
 use App\Models\Order;
 
@@ -16,16 +17,29 @@ class OrderRepository extends Repository
 
     /**
      * @param $orderId
+     * @param null $transporterId
      * @return Order
+     * @throws ResourceNotFoundException
      */
-    public function findOderWithProducts($orderId): Order
+    public function findOderWithProducts($orderId, $transporterId = null ): Order
     {
-        $order = $this->model
-            ->with(['products.product'])
-            ->where('id', '=', $orderId)
-            ->first();
-        ;
+        if (!empty($transporterId)) {
+            $order = $this->model
+                ->with(['products.product'])
+                ->where('id', '=', $orderId)
+                ->where('transporter_id', '=', $transporterId)
+                ->first();
+        } else {
+            $order = $this->model
+                ->with(['products.product'])
+                ->where('id', '=', $orderId)
+                ->first();
+        }
 
-        return $order;
+        if (empty($order)) {
+            throw new ResourceNotFoundException('message', 404);
+        } else {
+            return $order;
+        }
     }
 }

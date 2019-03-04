@@ -4,9 +4,8 @@ declare(strict_types = 1);
 
 namespace App\Services\Inventory;
 
-
+use App\Exceptions\BadRequestException;
 use App\Repositories\InventoryRepository;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class InventoryService
 {
@@ -27,13 +26,14 @@ class InventoryService
     /**
      * @param $productId
      * @return int
+     * @throws BadRequestException
      */
     public function getCurrentInventoryForProduct($productId): int
     {
         $inventory = $this->inventoryRepository->find($productId);
         if (empty($inventory)) {
-            //TODO: Create a bad request Exception
-            throw new BadRequestHttpException('message');
+            //TODO: Use translator
+            throw new BadRequestException('message');
         } else {
             return $inventory->quantity;
         }

@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Services\Transporters;
 
+use App\Exceptions\ResourceNotFoundException;
 use App\Models\Order;
 use App\Models\Transporter;
 use App\Repositories\OrderRepository;
@@ -47,14 +48,15 @@ class TransporterService
     /**
      * @param string $id
      * @return Transporter
+     * @throws ResourceNotFoundException
      */
     public function getTransporterInfo(string $id): Transporter
     {
         $transporter = $this->transporterRepository->find($id);
 
         if (empty($transporter)) {
-            //TODO: Implement Not Found exception for APIs
-            throw new NotFoundHttpException();
+            //TODO: Use translator
+            throw new ResourceNotFoundException('message', 404);
         }
         return $transporter;
     }
@@ -62,14 +64,15 @@ class TransporterService
     /**
      * @param string $id
      * @return Collection
+     * @throws ResourceNotFoundException
      */
     public function getTransporterOrders(string $id): Collection
     {
         $transporter = $this->transporterRepository->findTransporterWithPendingOrders($id);
 
         if (empty($transporter)) {
-            //TODO: Implement Not Found exception for APIs
-            throw new NotFoundHttpException();
+            //TODO: Use translator
+            throw new ResourceNotFoundException('message', 404);
         }
         return $transporter;
     }
@@ -78,10 +81,11 @@ class TransporterService
      * @param string $transporterId
      * @param string $orderId
      * @return Order
+     * @throws ResourceNotFoundException
      */
     public function getTransporterOrdersInfo(string $transporterId, string $orderId): Order
     {
-        $order = $this->orderRepository->findOderWithProducts($orderId);
+        $order = $this->orderRepository->findOderWithProducts($orderId, $transporterId);
 
         return $order;
     }
