@@ -16,7 +16,7 @@ class AlterInventoryTable extends Migration
     public function up()
     {
         Schema::table(self::TABLE_NAME, function (Blueprint $table) {
-            $table->unsignedInteger('warehouse_id')->nullable();
+            $table->unsignedBigInteger('warehouse_id')->nullable();
             $table->foreign('warehouse_id')
                 ->references('id')
                 ->on('warehouses')

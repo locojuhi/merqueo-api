@@ -19,12 +19,11 @@ class CreateProductsTable extends Migration
         CommonTableFieldsService::createTableWithCommonFields(self::TABLE_NAME);
         Schema::table(self::TABLE_NAME, function (Blueprint $table) {
             $table->string('name')->nullable();
-            $table->unsignedInteger('provider_id')->nullable();
+            $table->unsignedBigInteger('provider_id')->nullable();
+
             $table->foreign('provider_id')
                 ->references('id')
-                ->on(CreateProvidersTable::TableName)
-                ->onDelete('cascade')
-            ;
+                ->on('providers');
         });
     }
 

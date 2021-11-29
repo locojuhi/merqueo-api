@@ -18,8 +18,9 @@ class CreateInventoryTable extends Migration
     {
         CommonTableFieldsService::createTableWithCommonFields(self::TABLE_NAME);
         Schema::table(self::TABLE_NAME, function (Blueprint $table) {
-            $table->unsignedInteger('product_id');
-            $table->unsignedInteger('quantity');
+            $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('quantity');
+
             $table->foreign('product_id')
                 ->references('id')
                 ->on('products')

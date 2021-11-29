@@ -18,10 +18,9 @@ class CreateOrderProductsTable extends Migration
     {
         CommonTableFieldsService::createTableWithCommonFields(self::TABLE_NAME);
         Schema::table(self::TABLE_NAME, function (Blueprint $table) {
-            $table->unsignedInteger('order_id');
-            $table->unsignedInteger('product_id');
-            $table->unsignedInteger('quantity');
-
+            $table->unsignedBigInteger('order_id');
+            $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('quantity');
             $table->foreign('order_id')
                 ->references('id')
                 ->on('orders')
